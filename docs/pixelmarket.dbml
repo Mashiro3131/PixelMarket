@@ -1,28 +1,31 @@
 // PixelMarket — Schéma de base de données
-// TPI CFC Informaticien — Nico Mengisen
-// Compatible avec dbdiagram.io
+// Nico Mengisen - TPI CFC Informaticien Exploitation et Infrastructure
 
-// ─────────────────────────────────────────
-// NOTES SÉCURITÉ
-// • password_hash : bcrypt produit 60 chars, varchar(60) suffit techniquement
-//   mais on prend 72 pour absorber un éventuel changement d'algo (argon2 = 95 chars)
-// • email : RFC 5321 limite à 254 chars max
-// • reset_token : secrets.token_urlsafe(48) = 64 chars → varchar(100) avec marge
-// • file_path / preview_path : 512 chars couvre les paths longs avec sous-dossiers
-// • price / amount : DECIMAL(10,2) évite les erreurs d'arrondi du float (ex. 9.99 ≠ 9.990000001)
-// • role : enum string contrôlé applicativement, pas de valeur libre possible
-// ─────────────────────────────────────────
 
 Table users {
   id              integer       [pk, increment]
-  username        varchar(80)   [unique, not null,  note: "Affiché publiquement"]
-  email           varchar(254)  [unique, not null,  note: "RFC 5321 — max 254 chars"]
-  password_hash   varchar(72)   [not null,          note: "bcrypt hash — jamais le mot de passe en clair"]
-  role            varchar(10)   [not null, default: 'user', note: "user | artist | admin"]
-  is_active       boolean       [not null, default: true,   note: "Soft delete — ne pas supprimer physiquement"]
-  reset_token     varchar(100)  [null,     note: "Token unique généré via secrets.token_urlsafe(48)"]
-  reset_expires   timestamp     [null,     note: "Expiration du token — 1h recommandé"]
+  username        varchar(80)   [unique, not null, note: "Publique"]
+  email           varchar(254)  [unique, not null, note: "RFC 5321 (max 254 chars)"]
+  password_hash   varchar(255)  [not null,         note: "futur-proof argon2id"]
+  role            varchar(10)   [not null, default: 'user', note: "user, artist, admin"]
+  is_active       boolean       [not null, default: true,   note: "Soft delete"]
   created_at      timestamp     [not null, default: `now()`]
+
+
+  first_name      varchar(80)   [null]
+  last_name       varchar(80)   [null]
+  phone           varchar(20)   [null]
+
+
+  country         varchar(100)  [null]
+  street          varchar(200)  [null]
+  city            varchar(100)  [null]
+  state           varchar(100)  [null]
+  zip_code        varchar(20)   [null]
+
+  // Sécurité pour réinitialisation de mdp
+  reset_token     varchar(100)  [null, unique, note: "secrets.token_urlsafe(48)"]
+  reset_expires   timestamp     [null,         note: "Expiration après 1h"]
 
   indexes {
     email         [unique, name: 'idx_users_email']
@@ -30,21 +33,29 @@ Table users {
     role                  [name: 'idx_users_role']
     reset_token   [unique, name: 'idx_users_reset_token']
   }
-
-  note: "Un seul modèle User pour les 3 rôles — géré par le champ role"
 }
+
+
+Table categories {
+  id    integer     [pk, increment]
+  name  varchar(50) [unique, not null, note: "photo | video | music | poster | image "]
+}
+
 
 Table artworks {
   id              integer        [pk, increment]
   name            varchar(200)   [not null]
   description     text           [null]
-  price           decimal(10,2)  [not null,         note: "DECIMAL évite les erreurs float — ex. 9.99"]
-  artist_id       integer        [not null, ref: > users.id, note: "Clé étrangère vers l'artiste (role='artist')"]
-  preview_path    varchar(512)   [null,             note: "Image affichée sur le site (peut être watermarkée)"]
-  file_path       varchar(512)   [null,             note: "Fichier haute qualité envoyé par mail après achat"]
-  category        varchar(50)    [null,             note: "photo | video | music | poster | image — pour les filtres"]
-  is_sold         boolean        [not null, default: false, note: "true = retiré du catalogue automatiquement"]
+  price           decimal(10,2)  [not null,        note: "DECIMAL évite les erreurs float"]
+  is_sold         boolean        [not null, default: false, note: "true = retiré du catalogue"]
   created_at      timestamp      [not null, default: `now()`]
+
+  preview_path    varchar(512)   [null,             note: "Image affichée sur le site"]
+  file_path       varchar(512)   [null,             note: "Fichier envoyé par mail après achat"]
+
+  // FK
+  artist_id       integer        [not null, ref: > users.id]
+  category_id     integer        [ref: > categories.id]
 
   indexes {
     artist_id             [name: 'idx_artworks_artist']
@@ -52,31 +63,31 @@ Table artworks {
     category              [name: 'idx_artworks_category']
     (artist_id, is_sold)  [name: 'idx_artworks_artist_sold']
   }
-
-  note: "preview_path ≠ file_path : sécurise le fichier original jusqu'au paiement"
 }
+
 
 Table orders {
   id              integer        [pk, increment]
-  buyer_id        integer        [not null, ref: > users.id]
-  artwork_id      integer        [not null, ref: > artworks.id]
-  amount          decimal(10,2)  [not null,  note: "Snapshot du prix au moment de l'achat"]
-  email_sent      boolean        [not null, default: false, note: "True une fois le fichier envoyé par mail"]
+  amount          decimal(10,2)  [not null, note: "Snapshot du prix au moment de l'achat"]
+  email_sent      boolean        [not null, default: false, note: "True une fois le fichier envoyé"]
   created_at      timestamp      [not null, default: `now()`]
 
+  // FK
+  buyer_id        integer        [not null, ref: > users.id]
+  artwork_id      integer        [not null, ref: > artworks.id]
+
   indexes {
-    buyer_id              [name: 'idx_orders_buyer']
-    artwork_id            [name: 'idx_orders_artwork']
+    buyer_id               [name: 'idx_orders_buyer']
+    artwork_id             [name: 'idx_orders_artwork']
     (buyer_id, created_at) [name: 'idx_orders_history']
   }
-
-  note: "amount snapshote le prix — si l'artiste modifie le prix plus tard, l'historique reste cohérent"
 }
+
 
 Table newsletter {
   id              integer        [pk, increment]
   email           varchar(254)   [unique, not null, note: "RFC 5321"]
-  is_active       boolean        [not null, default: true, note: "Désabonnement = false, pas de suppression"]
+  is_active       boolean        [not null, default: true, note: "Soft delete — désabonnement = false"]
   created_at      timestamp      [not null, default: `now()`]
 
   indexes {
