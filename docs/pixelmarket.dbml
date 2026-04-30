@@ -1,97 +1,115 @@
 // PixelMarket — Schéma de base de données
 // Nico Mengisen - TPI CFC Informaticien Exploitation et Infrastructure
-
+ 
+ 
+ 
+ 
+// -------------------------------- USER --------------------------------
 
 Table users {
-  id              integer       [pk, increment]
-  username        varchar(80)   [unique, not null, note: "Publique"]
-  email           varchar(254)  [unique, not null, note: "RFC 5321 (max 254 chars)"]
-  password_hash   varchar(255)  [not null,         note: "futur-proof argon2id"]
-  role            varchar(10)   [not null, default: 'user', note: "user, artist, admin"]
-  is_active       boolean       [not null, default: true,   note: "Soft delete"]
-  created_at      timestamp     [not null, default: `now()`]
+    id integer [pk, increment]
+    username varchar(80) [unique, not null, note: "Publique"]
+    email varchar(254) [unique, not null, note: "RFC 5321 (max 254 chars)"]
+    password_hash varchar(255) [not null, note: "futur-proof argon2id"]
+    role varchar(10) [not null, default: 'user', note: "user, artist, admin"]
+    is_active boolean [not null, default: true,   note: "Soft delete"]
+    created_at timestamp [not null, default: `now()`]
 
+    // Adresse et contact de facturation
+    first_name varchar(80) [null]
+    last_name varchar(80) [null]
+    phone varchar(20) [null]
+    country varchar(100) [null]
+    street varchar(200) [null]
+    city varchar(100) [null]
+    state varchar(100) [null]
+    zip_code varchar(20) [null]
 
-  first_name      varchar(80)   [null]
-  last_name       varchar(80)   [null]
-  phone           varchar(20)   [null]
+    // Sécurité pour réinitialisation de mdp
+    reset_token varchar(100)  [null, unique, note: "secrets.token_urlsafe(48)"]
+    reset_expires timestamp [null, note: "Expiration après 1h"]
 
-
-  country         varchar(100)  [null]
-  street          varchar(200)  [null]
-  city            varchar(100)  [null]
-  state           varchar(100)  [null]
-  zip_code        varchar(20)   [null]
-
-  // Sécurité pour réinitialisation de mdp
-  reset_token     varchar(100)  [null, unique, note: "secrets.token_urlsafe(48)"]
-  reset_expires   timestamp     [null,         note: "Expiration après 1h"]
-
-  indexes {
-    email         [unique, name: 'idx_users_email']
-    username      [unique, name: 'idx_users_username']
-    role                  [name: 'idx_users_role']
-    reset_token   [unique, name: 'idx_users_reset_token']
-  }
+    indexes {
+        email [unique, name: 'idx_users_email']
+        username [unique, name: 'idx_users_username']
+        role [name: 'idx_users_role']
+        reset_token [unique, name: 'idx_users_reset_token']
+    }
 }
 
+
+
+
+// -------------------------------- CATEGORY --------------------------------
 
 Table categories {
-  id    integer     [pk, increment]
-  name  varchar(50) [unique, not null, note: "photo | video | music | poster | image "]
+    id integer [pk, increment]
+    name varchar(50) [unique, not null, note: "photo | video | music | poster | image "]
 }
 
+
+
+
+// -------------------------------- ARTWORK --------------------------------
 
 Table artworks {
-  id              integer        [pk, increment]
-  name            varchar(200)   [not null]
-  description     text           [null]
-  price           decimal(10,2)  [not null,        note: "DECIMAL évite les erreurs float"]
-  is_sold         boolean        [not null, default: false, note: "true = retiré du catalogue"]
-  created_at      timestamp      [not null, default: `now()`]
+    id integer [pk, increment]
+    name varchar(200) [not null]
+    description text [null]
+    price decimal(10,2) [not null]
+    is_sold boolean [not null, default: false, note: "si true = retiré du catalogue"]
+    created_at timestamp [not null, default: `now()`]
 
-  preview_path    varchar(512)   [null,             note: "Image affichée sur le site"]
-  file_path       varchar(512)   [null,             note: "Fichier envoyé par mail après achat"]
+    preview_path varchar(512) [null, note: "Image affichée sur le site"]
+    file_path varchar(512) [null, note: "Fichier envoyé par mail après achat"]
 
-  // FK
-  artist_id       integer        [not null, ref: > users.id]
-  category_id     integer        [ref: > categories.id]
+    // FK
+    artist_id integer [not null, ref: > users.id]
+    category_id integer [ref: > categories.id]
 
-  indexes {
-    artist_id             [name: 'idx_artworks_artist']
-    is_sold               [name: 'idx_artworks_sold']
-    category              [name: 'idx_artworks_category']
-    (artist_id, is_sold)  [name: 'idx_artworks_artist_sold']
-  }
+    indexes {
+        artist_id [name: 'idx_artworks_artist']
+        is_sold [name: 'idx_artworks_sold']
+        category [name: 'idx_artworks_category']
+        (artist_id, is_sold)  [name: 'idx_artworks_artist_sold']
+    }
 }
-
+ 
+ 
+ 
+ 
+// -------------------------------- ORDER --------------------------------
 
 Table orders {
-  id              integer        [pk, increment]
-  amount          decimal(10,2)  [not null, note: "Snapshot du prix au moment de l'achat"]
-  email_sent      boolean        [not null, default: false, note: "True une fois le fichier envoyé"]
-  created_at      timestamp      [not null, default: `now()`]
+    id integer [pk, increment]
+    amount decimal(10,2) [not null, note: "Snapshot du prix au moment de l'achat"]
+    email_sent boolean [not null, default: false, note: "True une fois le fichier envoyé"]
+    created_at timestamp [not null, default: `now()`]
 
-  // FK
-  buyer_id        integer        [not null, ref: > users.id]
-  artwork_id      integer        [not null, ref: > artworks.id]
+    // FK
+    buyer_id integer [not null, ref: > users.id]
+    artwork_id integer [not null, ref: > artworks.id]
 
-  indexes {
-    buyer_id               [name: 'idx_orders_buyer']
-    artwork_id             [name: 'idx_orders_artwork']
-    (buyer_id, created_at) [name: 'idx_orders_history']
-  }
+    indexes {
+        buyer_id [name: 'idx_orders_buyer']
+        artwork_id [name: 'idx_orders_artwork']
+        (buyer_id, created_at) [name: 'idx_orders_history']
+    }
 }
 
 
-Table newsletter {
-  id              integer        [pk, increment]
-  email           varchar(254)   [unique, not null, note: "RFC 5321"]
-  is_active       boolean        [not null, default: true, note: "Soft delete — désabonnement = false"]
-  created_at      timestamp      [not null, default: `now()`]
 
-  indexes {
-    email         [unique, name: 'idx_newsletter_email']
-    is_active             [name: 'idx_newsletter_active']
-  }
+
+//  -------------------------------- NEWSLETTER --------------------------------
+
+Table newsletter {
+    id integer [pk, increment]
+    email varchar(254) [unique, not null, note: "RFC 5321"]
+    is_active boolean [not null, default: true, note: "Soft delete désabonnement = false"]
+    created_at timestamp [not null, default: `now()`]
+
+    indexes {
+        email [unique, name: 'idx_newsletter_email']
+        is_active [name: 'idx_newsletter_active']
+    }
 }
