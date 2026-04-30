@@ -63,8 +63,8 @@ class User(UserMixin, db.Model):
 class Category(db.Model):
     __tablename__ = 'categories'
  
-    id       = db.Column(db.Integer,    primary_key=True)
-    name     = db.Column(db.String(50), unique=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
  
     artworks = db.relationship('Artwork', backref='category', lazy=True)
  
@@ -94,7 +94,7 @@ class Artwork(db.Model):
     # Fichier original en haute qualité envoyé par mail après achat
     file_path = db.Column(db.String(512), nullable=True)
  
-    # ─── Foreign Keys ─────────────────────────────────────
+    # Foreign Keys
     artist_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
  
@@ -152,6 +152,6 @@ class Newsletter(db.Model):
 # Flask-SQLAlchemy modèles :  https://flask-sqlalchemy.palletsprojects.com/en/3.1.x/models/
 # Flask-Login UserMixin :     https://flask-login.readthedocs.io/en/latest/#flask_login.UserMixin
 # SQLAlchemy types :          https://docs.sqlalchemy.org/en/20/core/types.html
-# datetime.utcnow :           https://docs.python.org/3/library/datetime.html
+# datetime.now(timezone.utc): https://docs.python.org/3/library/datetime.html#datetime.datetime.utcnow
 # minimisation des donnéees : https://www.talend.com/fr/resources/minimisation-donnees/
 # argon2id longueur hash :    https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
