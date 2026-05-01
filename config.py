@@ -8,8 +8,8 @@ load_dotenv()
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
-    # Clé secrète pour sécuriser les sessions et les formulaires CSRF
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-key-change-en-prod'
+    # Sécuriser les sessions et les forms
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
     # Config de la BD SQLAlchemy
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
