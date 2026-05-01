@@ -1,7 +1,7 @@
 from flask import Flask
 from config import Config
 from app.extensions import db, login_manager, mail, bcrypt
-
+from flask import Flask, render_template
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -41,10 +41,18 @@ def create_app(config_class=Config):
     with app.app_context():
         db.create_all()
 
+
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
+
+
     return app
 
 
-# ─── SOURCES ────────────────────────────────────────────────────────────────
-# Application factory pattern : https://flask.palletsprojects.com/en/3.0.x/patterns/appfactories/
-# Flask-Login user_loader :     https://flask-login.readthedocs.io/en/latest/#how-it-works
+# -------------------------------- SOURCES --------------------------------
+# Application factory pattern :     https://flask.palletsprojects.com/en/3.0.x/patterns/appfactories/
+# Flask-Login user_loader :         https://flask-login.readthedocs.io/en/latest/#how-it-works
 # db.session.get (SQLAlchemy 2.0) : https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.Session.get
+# Database :                        https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-iv-database
