@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="error-404">
+    <img src="{{ url_for('static', filename='img/404.webp') }}" alt="404">
+    <h1>Page introuvable</h1>
+    <a href="/">Retour à l'accueil</a>
+</div>
+{% endblock %}
