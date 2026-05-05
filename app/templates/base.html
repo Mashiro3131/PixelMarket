@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PixelMarket{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="{{ url_for('artworks.index') }}" class="navbar-brand">PixelMarket</a>
+
+        <div class="navbar-links">
+            <a href="{{ url_for('artworks.index') }}">Galerie</a>
+
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('account.profile') }}">Mon compte</a>
+
+                {% if current_user.is_artist() %}
+                    <a href="{{ url_for('artist.dashboard') }}">Mes oeuvres</a>
+                {% endif %}
+
+                {% if current_user.is_admin() %}
+                    <a href="{{ url_for('admin.users') }}">Admin</a>
+                {% endif %}
+
+                <a href="{{ url_for('auth.logout') }}">Déconnexion</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Connexion</a>
+                <a href="{{ url_for('auth.register') }}" class="btn-primary">S'inscrire</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Messages flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 PixelMarket — Nico Mengisen</p>
+    </footer>
+
+    <!-- JS principal -->
+    <script src="{{ url_for('static', filename='js/load_more.js') }}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
