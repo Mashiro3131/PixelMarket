@@ -93,7 +93,10 @@ class Artwork(db.Model):
     
     # Fichier original en haute qualité envoyé par mail après achat
     file_path = db.Column(db.String(512), nullable=True)
- 
+    
+    # Slug pour URL
+    slug = db.Column(db.String(250), unique=True, nullable=True)
+    
     # Foreign Keys
     artist_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=True)
