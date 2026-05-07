@@ -1,0 +1,22 @@
+<a href="{{ url_for('artworks.detail', slug=artwork.slug) }}" class="artwork-card">
+{# <a href="{{ url_for('artworks.detail', id=artwork.id) }}" class="artwork-card"> -> sans slug #}
+    <div class="artwork-img-wrapper">
+        {% if artwork.preview_path %}
+            <img src="{{ url_for('static', filename=artwork.preview_path) }}"
+                 alt="{{ artwork.name }}">
+        {% else %}
+            <div class="artwork-img-placeholder"></div>
+        {% endif %}
+    </div>
+
+    <div class="artwork-info">
+        <p class="artwork-artist">{{ artwork.artist.username }}</p>
+        <!-- <p class="artwork-artist">{@{ artwork.artist.username }}</p> -->
+        <p class="artwork-name">{{ artwork.name }}</p>
+        {% if artwork.category %}
+            <span class="artwork-category">{{ artwork.category.name }}</span>
+        {% endif %}
+        <p class="artwork-price">CHF {{ artwork.price }}</p>
+    </div>
+
+</a>
