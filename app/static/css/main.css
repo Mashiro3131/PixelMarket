@@ -8,9 +8,14 @@
     --color-success:    #27AE60;
     --color-info:       #2980B9;
     --color-warning:    #F39C12;
+    --color-artwork-text: #707070;
+    --color-artist-name-text : #111111;
+    --color-artwork-price-text : #111111;
 
-    --font-serif:  'Playfair Display', Georgia, serif;
-    --font-sans:   'Inter', Arial, sans-serif;
+    --font-serif:  'Playfair Display', Georgia, serif, Helvetica;
+    --font-sans:   'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    --font-artwork-size : 13px;
 
     --navbar-height: 60px;
     --max-width:     1200px;
