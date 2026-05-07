@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Galerie — PixelMarket{% endblock %}
+
+{% block content %}
+
+<div class="gallery-header">
+    <h1 class="gallery-title">Galerie</h1>
+</div>
+
+<!-- Filtres par catégorie -->
+<div class="filters">
+    <a href="{{ url_for('artworks.index') }}"
+       class="filter-btn {% if not current_category %}active{% endif %}">
+        Tous
+    </a>
+    {% for category in categories %}
+        <a href="{{ url_for('artworks.index', category=category.id) }}"
+           class="filter-btn {% if current_category == category.id %}active{% endif %}">
+            {{ category.name }}
+        </a>
+    {% endfor %}
+</div>
+
+<!-- Grille des oeuvre -->
+<div class="artworks-grid" id="artworks-grid">
+    {% for artwork in artworks.items %}
+        {% include 'artworks/_card.html' %}
+    {% endfor %}
+</div>
+
+<!-- Message si aucune oeuvre -->
+{% if not artworks.items %}
+    <p class="empty-message">Aucune œuvre disponible pour le moment.</p>
+{% endif %}
+
+<!-- Bouton load more -->
+{% if artworks.has_next %}
+    <div class="load-more-container">
+        <button id="load-more-btn" class="btn-secondary">
+            Charger plus
+        </button>
+    </div>
+{% endif %}
+
+{% endblock %}
