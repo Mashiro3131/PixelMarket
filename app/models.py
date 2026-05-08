@@ -1,7 +1,3 @@
-# app/models.py
-# Définit la structure de la base de données
-# Chaque classe = une table dans SQLite
-
 from datetime import datetime, timezone
 from flask_login import UserMixin
 from app.extensions import db
