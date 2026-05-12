@@ -55,8 +55,8 @@ with app.app_context():
     oeuvre1.category_id = photo.id
 
     oeuvre2 = Artwork()
-    oeuvre2.name = "Nuit urbaine"
-    oeuvre2.description = "Les lumières de la ville après minuit."
+    oeuvre2.name = "Lonely Boys"
+    oeuvre2.description = "Affiche de deux frères errant dans les rues de londres"
     oeuvre2.price = 85.00
     oeuvre2.artist_id = artiste.id
     oeuvre2.category_id = photo.id
@@ -69,15 +69,15 @@ with app.app_context():
     oeuvre3.category_id = affiche.id
 
     oeuvre4 = Artwork()
-    oeuvre4.name = "Voyage sonore"
-    oeuvre4.description = "Une pièce musicale ambient de 10 minutes."
+    oeuvre4.name = "Kou 2 Tatane"
+    oeuvre4.description = "Sample d'un remix tek acide bounce"
     oeuvre4.price = 15.00
     oeuvre4.artist_id = artiste.id
     oeuvre4.category_id = musique.id
 
     oeuvre5 = Artwork()
-    oeuvre5.name = "Timelapse montagne"
-    oeuvre5.description = "Vidéo 4K d\"un lever de soleil en montagne."
+    oeuvre5.name = "The setting sun"
+    oeuvre5.description = "Vidéo 4K d\"un soleil couchant en montagne."
     oeuvre5.price = 45.00
     oeuvre5.artist_id = artiste.id
     oeuvre5.category_id = video.id
