@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ artwork.name }} — PixelMarket{% endblock %}
+
+{% block content %}
+
+<div class="artwork-detail-container">
+
+    <div class="artwork-detail-img-wrapper">
+        {% if artwork.preview_path %}
+            <img src="{{ url_for('static', filename=artwork.preview_path) }}"
+                 alt="{{ artwork.name }}">
+        {% else %}
+            <div class="artwork-detail-img-placeholder"></div>
+        {% endif %}
+    </div>
+
+ <div class="artwork-detail-info">
+
+    <div class="artwork-detail-header">
+        <p class="artwork-detail-artist">{{ artwork.artist.username }}</p>
+        <p class="artwork-detail-title"><em>{{ artwork.name }}</em></p>
+    </div>
+
+    {% if artwork.description %}
+        <p class="artwork-detail-description">{{ artwork.description }}</p>
+    {% endif %}
+
+    <div class="artwork-detail-category-wrapper">
+        {% if artwork.category %}
+            <span class="artwork-detail-category">{{ artwork.category.name }}</span>
+        {% endif %}
+    </div>
+
+    <div class="artwork-detail-buy">
+        <p class="artwork-detail-price">CHF {{ artwork.price }}</p>
+
+        {% if current_user.is_authenticated %}
+            {% if not current_user.is_artist() and not current_user.is_admin() %}
+                <button class="btn-primary btn-full" disabled>
+                    Acheter — bientôt disponible
+                </button>
+            {% else %}
+                <button class="btn-primary btn-full" disabled>
+                    Achat non disponible pour les artistes et administrateurs !!!
+                </button>
+            {% endif %}
+        {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn-primary btn-full">
+                Acheter
+            </a>
+        {% endif %}
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
