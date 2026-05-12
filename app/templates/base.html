@@ -21,20 +21,22 @@
     <nav class="navbar">
         <a href="{{ url_for('artworks.index') }}" class="navbar-brand">PixelMarket</a>
 
+        <!-- Search -->
+        <form method="GET" action="{{ url_for('artworks.search') }}" class="navbar-search">
+            <input type="text" name="q" placeholder="Rechercher par artiste, œuvre..." class="navbar-search-input">
+        </form>
+
+        <!-- Liens de la navbar à droite -->
         <div class="navbar-links">
             <a href="{{ url_for('artworks.index') }}">Galerie</a>
-
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('account.profile') }}">Mon compte</a>
-
                 {% if current_user.is_artist() %}
-                    <a href="{{ url_for('artist.dashboard') }}">Mes oeuvres</a>
+                    <a href="{{ url_for('artist.dashboard') }}">Mes œuvres</a>
                 {% endif %}
-
                 {% if current_user.is_admin() %}
                     <a href="{{ url_for('admin.users') }}">Admin</a>
                 {% endif %}
-
                 <a href="{{ url_for('auth.logout') }}">Déconnexion</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}">Connexion</a>
