@@ -83,7 +83,7 @@
     font-family: var(--font-sans);
     font-size: var(--font-artwork-size);
     font-weight: 300;
-    color: var(--color-artist-name-text); /* tu avais oublié -- ici */
+    color: var(--color-artist-name-text);
     margin-bottom: 4px;
 }
 
@@ -113,6 +113,106 @@
     color: var(--color-artwork-price-text);
 }
 
+
+/* ==========================================================================
+   Page de détails
+   ========================================================================== */ 
+
+
+.artwork-detail-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 40px;
+}
+ 
+/* Image
+   ========================================================================== */
+
+.artwork-detail-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--color-gray-light);
+    overflow: hidden;
+}
+ 
+.artwork-detail-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+ 
+.artwork-detail-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--color-gray-light);
+}
+ 
+.artwork-detail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 8px;
+}
+ 
+/* Artiste, Artwork, Description, Catégorie, Prix
+   ========================================================================== */
+.artwork-detail-header {
+    padding-bottom: 20px;
+}
+ 
+.artwork-detail-artist {
+    font-size: 1.3125rem;
+    font-weight: 500;
+    color: var(--color-black);
+    margin-bottom: 2px;
+}
+ 
+.artwork-detail-title {
+    font-family: 1.3125rem;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--color-artwork-text);
+}
+ 
+/* Description */
+.artwork-detail-description {
+    font-size: 0.809375rem;
+    color: var(--color-artwork-text);
+    line-height: 1.7;
+    padding-bottom: 20px;
+}
+ 
+/* Catégorie */
+.artwork-detail-category {
+    display: inline-block;
+    font-size: 0.809375rem;
+    padding: 4px 10px;
+    border: 0.5px solid var(--color-artwork-text);
+    color: var(--color-black);
+    align-self: flex-start;
+}
+ 
+
+.artwork-detail-buy {
+    padding-top: 20px;
+    /* border-top: 0.5px solid var(--color-artwork-text); */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+ 
+.artwork-detail-price {
+    font-size: 1.3125rem;
+    font-weight: 400;
+    color: var(--color-black);
+}
+ 
+@media (max-width: 768px) {
+    .artwork-detail-container {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* ==========================================================================
    Filtres par catégorie
