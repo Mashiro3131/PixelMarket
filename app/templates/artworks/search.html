@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Recherche — PixelMarket{% endblock %}
+
+{% block content %}
+
+<!-- Barre de recherche -->
+<div class="search-header">
+    <h1 class="gallery-title">Recherche</h1>
+    <form method="GET" action="{{ url_for('artworks.search') }}">
+        <div class="search-bar">
+            <input type="text" name="q" class="form-control" value="{{ query }}" placeholder="Rechercher par artiste, œuvre...">
+            <button type="submit" class="btn-primary">Rechercher</button>
+        </div>
+    </form>
+</div>
+
+<!-- Résultats de recherche -->
+{% if artworks.items %}
+    <p class="search-count">{{ artworks.total }} résultat(s){% if query %} pour {{ query }}{% endif %}</p>
+    <div class="artworks-grid" id="artworks-grid">
+        {% for artwork in artworks.items %}
+            {% include 'artworks/_card.html' %}
+        {% endfor %}
+    </div>
+
+    <!-- Bouton pour charger plus -->
+    {% if artworks.has_next %}
+        <div class="load-more-container">
+            <button id="load-more-btn" class="btn-secondary">Charger plus</button>
+        </div>
+    {% endif %}
+
+
+<!-- Affiche un message si rien trouvé -->
+{% elif query %}
+    <p class="empty-message">Aucune œuvre trouvée pour "{{ query }}"...</p>
+{% endif %}
+
+{% endblock %}
