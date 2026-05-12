@@ -1,41 +1,54 @@
+/* ==========================================================================
+   Variables
+   ========================================================================== */
+ 
 :root {
-    --color-black:      #111111;
-    --color-white:      #FFFFFF;
-    --color-gray-light: #F5F5F5;
-    --color-gray-mid:   #E0E0E0;
-    --color-gray-text:  #888888;
-    --color-error:      #C0392B;
-    --color-success:    #27AE60;
-    --color-info:       #2980B9;
-    --color-warning:    #F39C12;
-    --color-artwork-text: #707070;
-    --color-artist-name-text : #111111;
-    --color-artwork-price-text : #111111;
-
-    --font-serif:  'Playfair Display', Georgia, serif, Helvetica;
-    --font-sans:   'Helvetica Neue', Helvetica, Arial, sans-serif;
-
-    --font-artwork-size : 13px;
-
-    --navbar-height: 60px;
-    --max-width:     1200px;
-    --gap:           24px;
+ 
+    /* Couleurs */
+    --color-black:              #111111;
+    --color-white:              #FFFFFF;
+    --color-gray-light:         #F5F5F5;
+    --color-gray-mid:           #E0E0E0;
+    --color-gray-text:          #888888;
+    --color-error:              #C0392B;
+    --color-success:            #27AE60;
+    --color-info:               #2980B9;
+    --color-warning:            #F39C12;
+ 
+    /* Couleurs spécifiques aux cards et info*/
+    --color-artwork-text:       #707070;
+    --color-artist-name-text:   #111111;
+    --color-artwork-price-text: #111111;
+ 
+    /* Typo */
+    --font-serif:           'Playfair Display', Georgia, serif;
+    --font-sans:            'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-artwork-size:    13px;
+ 
+    /* Layout */
+    --navbar-height:    60px;
+    --max-width:        1200px;
+    --gap:              24px;
 }
-
-
-/* -----------------------------RESET -------------------------------- */
-
-*, *::before, *::after {
+ 
+ 
+/* ==========================================================================
+   Reset
+   ========================================================================== */
+ 
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-
+ 
 html {
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
 }
-
+ 
 body {
     font-family: var(--font-sans);
     font-weight: 400;
@@ -43,24 +56,26 @@ body {
     background-color: var(--color-white);
     line-height: 1.6;
 }
-
+ 
 a {
     color: inherit;
     text-decoration: none;
 }
-
+ 
 a:hover {
     text-decoration: underline;
 }
-
+ 
 img {
     max-width: 100%;
     display: block;
 }
-
-
-/* --------------------------- NAVABAR -------------------------------- */
-
+ 
+ 
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+ 
 .navbar {
     position: sticky;
     top: 0;
@@ -73,39 +88,71 @@ img {
     justify-content: space-between;
     padding: 0 var(--gap);
 }
-
+ 
 .navbar-brand {
     font-family: var(--font-serif);
     font-size: 1.4rem;
     font-weight: 600;
     color: var(--color-black);
     letter-spacing: -0.5px;
+    flex-shrink: 0;
 }
-
+ 
 .navbar-links {
     display: flex;
     align-items: center;
     gap: 28px;
+    flex-shrink: 0;
 }
-
+ 
 .navbar-links a {
     font-size: 0.875rem;
     font-weight: 300;
     color: var(--color-black);
     transition: opacity 0.2s;
 }
-
+ 
 .navbar-links a:hover {
     opacity: 0.6;
     text-decoration: none;
 }
-
+ 
+/* Corrige la couleur du bouton S'inscrire dans la navbar */
 .navbar-links .btn-primary {
     color: var(--color-white);
 }
-
-/* ---------------------------- BOUTONS -------------------------------- */
-
+ 
+.navbar-search {
+    flex: 1;
+    min-width: 0;
+    padding: 0 40px;
+}
+ 
+.navbar-search-input {
+    width: 100%;
+    border: 0.5px solid var(--color-gray-mid);
+    background: var(--color-white);
+    padding: 8px 40px 8px 16px;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    outline: none;
+    border-radius: 20px;
+    transition: border-color 0.2s;
+}
+ 
+.navbar-search-input:focus {
+    border-color: var(--color-black);
+}
+ 
+.navbar-search-input::placeholder {
+    color: var(--color-gray-text);
+}
+ 
+ 
+/* ==========================================================================
+   Boutons
+   ========================================================================== */
+ 
 .btn-primary {
     display: inline-block;
     background: var(--color-black);
@@ -115,17 +162,17 @@ img {
     font-weight: 400;
     padding: 8px 20px;
     border: none;
-    border-radius: 10;
+    border-radius: 0;
     cursor: pointer;
     transition: opacity 0.2s;
     text-align: center;
 }
-
+ 
 .btn-primary:hover {
     opacity: 0.75;
     text-decoration: none;
 }
-
+ 
 .btn-secondary {
     display: inline-block;
     background: var(--color-white);
@@ -140,71 +187,77 @@ img {
     transition: background 0.2s;
     text-align: center;
 }
-
+ 
 .btn-secondary:hover {
     background: var(--color-gray-light);
     text-decoration: none;
 }
-
+ 
 .btn-full {
     width: 100%;
 }
-
-
-/* --------------------------- MESSAGES FLASH -------------------------------- */
-
+ 
+ 
+/* ==========================================================================
+   Messages flash
+   ========================================================================== */
+ 
 .flash-messages {
     padding: 0 var(--gap);
 }
-
+ 
 .flash {
     padding: 12px 16px;
     margin: 12px 0;
     font-size: 0.875rem;
     border-left: 3px solid;
 }
-
+ 
 .flash-success {
     background: #F0FFF4;
     border-color: var(--color-success);
     color: #1E7E34;
 }
-
+ 
 .flash-danger {
     background: #FFF5F5;
     border-color: var(--color-error);
     color: var(--color-error);
 }
-
+ 
 .flash-info {
     background: #EBF5FB;
     border-color: var(--color-info);
     color: var(--color-info);
 }
-
+ 
 .flash-warning {
     background: #FEFCE8;
     border-color: var(--color-warning);
     color: #B7791F;
 }
-
-
-/* -------------------------- LAYOUT PRINCIPAL -------------------------------- */
-
+ 
+ 
+/* ==========================================================================
+   Layout principal
+   ========================================================================== */
+ 
 .main-content {
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 40px var(--gap);
     min-height: calc(100vh - var(--navbar-height) - 60px);
 }
-
-
-/* -------------------------------- FORMS -------------------------------- */
-
+ 
+ 
+/* ==========================================================================
+   Formulaires
+   ========================================================================== */
+ 
 .form-group {
     margin-bottom: 24px;
 }
-
+ 
 .form-group label {
     display: block;
     font-size: 0.75rem;
@@ -214,7 +267,7 @@ img {
     letter-spacing: 0.08em;
     margin-bottom: 6px;
 }
-
+ 
 .form-control {
     width: 100%;
     border: none;
@@ -228,24 +281,24 @@ img {
     outline: none;
     transition: border-color 0.2s;
 }
-
+ 
 .form-control:focus {
     border-bottom-color: var(--color-black);
 }
-
+ 
 .form-error {
     display: block;
     font-size: 0.75rem;
     color: var(--color-error);
     margin-top: 4px;
 }
-
+ 
 .form-check {
     display: flex;
     align-items: center;
     gap: 8px;
 }
-
+ 
 .form-check label {
     font-size: 0.875rem;
     color: var(--color-gray-text);
@@ -253,47 +306,69 @@ img {
     letter-spacing: 0;
     margin-bottom: 0;
 }
-
-
-/* -------------------------------- Page AUTH -------------------------------- */
-
+ 
+ 
+/* ==========================================================================
+   Pages auth (login, register, forgot, reset)
+   ========================================================================== */
+ 
 .auth-container {
     max-width: 400px;
     margin: 60px auto;
     padding: 0 var(--gap);
 }
-
+ 
 .auth-title {
     font-family: var(--font-serif);
     font-size: 1.75rem;
     font-weight: 400;
     margin-bottom: 8px;
 }
-
+ 
 .auth-subtitle {
     font-size: 0.875rem;
     color: var(--color-gray-text);
     margin-bottom: 32px;
 }
-
+ 
 .auth-links {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 12px;
     margin-top: 20px;
     font-size: 0.8125rem;
     color: var(--color-gray-text);
-    justify-content: center;
 }
-
+ 
 .auth-links a {
     color: var(--color-black);
     text-decoration: underline;
 }
-
-
-/* -------------------------------- Footer -------------------------------- */
-
+ 
+ 
+/* ==========================================================================
+   Recherche
+   ========================================================================== */
+ 
+.search-bar {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    max-width: 600px;
+}
+ 
+.search-count {
+    font-size: 0.875rem;
+    color: var(--color-gray-text);
+    margin: 24px 0 16px;
+}
+ 
+ 
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+ 
 .footer {
     height: 60px;
     border-top: 0.5px solid var(--color-gray-mid);
@@ -303,10 +378,12 @@ img {
     font-size: 0.75rem;
     color: var(--color-gray-text);
 }
-
-
-/* -------------------------------- 404 -------------------------------- */
-
+ 
+ 
+/* ==========================================================================
+   Page 404
+   ========================================================================== */
+ 
 .error-404 {
     display: flex;
     flex-direction: column;
@@ -316,45 +393,52 @@ img {
     padding: 80px 0;
     text-align: center;
 }
-
+ 
 .error-404 img {
     max-width: 400px;
 }
-
+ 
 .error-404 h1 {
     font-family: var(--font-serif);
     font-size: 2rem;
     font-weight: 400;
 }
-
+ 
 .error-404 a {
     font-size: 0.875rem;
     text-decoration: underline;
 }
-
-/* -------------------------------- RESPONSIVE -------------------------------- */
+ 
+ 
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+ 
 @media (max-width: 768px) {
     .navbar-links {
         gap: 16px;
     }
-
+ 
     .auth-container {
         margin: 32px auto;
     }
 }
-
+ 
 @media (max-width: 480px) {
     .navbar-brand {
         font-size: 1.2rem;
     }
-
+ 
     .navbar-links a:not(.btn-primary) {
         display: none;
     }
 }
-
-
-/* -------------------------------- SOURCES -------------------------------- */
+ 
+ 
+/* ==========================================================================
+   Sources
+   ========================================================================== */
+/* Idiomatic CSS :      https://github.com/necolas/idiomatic-css              */
 /* CSS Reset :          https://www.joshwcomeau.com/css/custom-css-reset/     */
 /* Google Fonts :       https://fonts.google.com/specimen/Playfair+Display    */
 /* CSS Variables :      https://developer.mozilla.org/en-US/docs/Web/CSS/--*  */
