@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes œuvres — PixelMarket{% endblock %}
+
+{% block content %}
+
+<!-- Entête et bouton ajouter du dashboard -->
+<div class="dashboard-header">
+    <h1 class="gallery-title">Mes œuvres</h1>
+    <a href="{{ url_for('artist.add') }}" class="btn-primary">+ Ajouter une œuvre</a>
+</div>
+
+{% if artworks %}
+
+    <!-- Table du dashboard de l'artiste -->
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <th>Oeuvre</th>
+                <th>Nom</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for artwork in artworks %}
+                <tr>
+                    <!-- Image -->
+                    <td>
+                        {% if artwork.preview_path %}
+                            <img src="{{ url_for('static', filename=artwork.preview_path) }}"
+                                alt="{{ artwork.name }}"
+                                class="dashboard-preview">
+                        {% else %}
+                            <div class="dashboard-preview-placeholder"></div>
+                        {% endif %}
+                    </td>
+                    
+                    <!-- Nom de l'oeuvre -->
+                    <td>
+                        <a href="{{ url_for('artworks.detail', slug=artwork.slug) }}">
+                            {{ artwork.name }}
+                        </a>
+                    </td>
+
+                    <!-- Catégorie -->
+                    <td>{{ artwork.category.name if artwork.category else '—' }}</td>
+                    
+                    <!-- Prix -->
+                    <td>CHF {{ artwork.price }}</td>
+
+                    <!-- Statut -->
+                    <td>
+                        {% if artwork.is_sold %}
+                            <span class="badge-sold">Vendu</span>
+                        {% else %}
+                            <span class="badge-available">Disponible</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- CRUD -->
+                    <td class="dashboard-actions" >
+                        <a href="{{ url_for('artist.edit', id=artwork.id) }}" class="btn-secondary">Modifier</a>
+                        <form method="POST" action="{{ url_for('artist.delete', id=artwork.id) }}"
+                            onsubmit="return confirm('Supprimer cette œuvre ?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% else %}
+    <p class="empty-message">Tu n'as pas encore ajouté d'œuvre. <a href="{{ url_for('artist.add') }}">Ajouter une œuvre</a></p>
+{% endif %}
+
+{% endblock %}
