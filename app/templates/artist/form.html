@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} — PixelMarket{% endblock %}
+
+{% block content %}
+
+<div class="artist-form-container">
+
+    <h1 class="gallery-title">{{ title }}</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <!-- Nom de l'oeuvre -->
+        <div class="form-group">
+            {{ form.name.label }}
+            {{ form.name(class="form-control") }}
+            {% for error in form.name.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Descriptif de l'oeuvre -->
+        <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class="form-control") }}
+            {% for error in form.description.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Ajouter un prix -->
+        <div class="form-group">
+            {{ form.price.label }}
+            {{ form.price(class="form-control") }}
+            {% for error in form.price.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Choisir la catégorie -->
+        <div class="form-group">
+            {{ form.category_id.label }}
+            {{ form.category_id(class="form-control") }}
+            {% for error in form.category_id.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Upload de  l'image de prévisualisaton -->
+        <div class="form-group">
+            {{ form.preview.label }}
+            <!-- Affiche l'image actuelle en mode edit -->
+            {% if artwork and artwork.preview_path %}
+                <img src="{{ url_for('static', filename=artwork.preview_path) }}" alt="Preview actuel" class="form-preview-img">
+            {% endif %}
+            {{ form.preview(class="form-control") }}
+            {% for error in form.preview.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Upload du fichier original -->
+        <div class="form-group">
+            {{ form.file.label }}
+            <!-- Indique si un fichier existe déjà en mode edit -->
+            {% if artwork and artwork.file_path %}
+                <p class="form-hint">Fichier actuel : {{ artwork.file_path.split('/')[-1] }}</p>
+            {% endif %}
+            {{ form.file(class="form-control") }}
+            {% for error in form.file.errors %}
+                <span class="form-error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn-primary") }}
+            <a href="{{ url_for('artist.dashboard') }}" class="btn-secondary">Annuler</a>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
