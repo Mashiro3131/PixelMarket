@@ -483,6 +483,7 @@ img {
     margin-bottom: 8px;
 }
 
+
 /* ==========================================================================
    Account (profil, commandes)
    ========================================================================== */
@@ -533,6 +534,91 @@ img {
     gap: 24px;
 }
 
+
+/* ==========================================================================
+   Newsletter
+   ========================================================================== */
+
+.footer {
+    margin-top: auto;
+    height: auto;
+    padding: 32px var(--gap);
+    border-top: 0.5px solid var(--color-gray-mid);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.75rem;
+    color: var(--color-gray-text);
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.newsletter-input {
+    /* margin-top: auto; */
+    border: 0.5px solid var(--color-gray-mid);
+    padding: 2px 16px;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    outline: none;
+    width: 280px;
+}
+
+.newsletter-input:focus {
+    border-color: var(--color-black);
+}
+
+
+/* ==========================================================================
+   Recap commande
+   ========================================================================== */
+
+.recap-container {
+    max-width: 500px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.recap-artwork {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    padding: 24px 0;
+    border-top: 0.5px solid var(--color-gray-mid);
+    border-bottom: 0.5px solid var(--color-gray-mid);
+}
+
+.recap-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.recap-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    color: var(--color-gray-text);
+}
+
+.recap-price {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-black);
+}
+
+.recap-note {
+    font-size: 0.8125rem;
+    color: var(--color-gray-text);
+    line-height: 1.6;
+}
 
 /* ==========================================================================
    Footer
