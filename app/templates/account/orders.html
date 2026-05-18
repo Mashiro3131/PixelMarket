@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Mes commandes — PixelMarket{% endblock %}
+
+{% block content %}
+
+<div class="account-container">
+
+    <h1 class="gallery-title">Mes commandes</h1>
+
+    <!-- Navigation du compte -->
+    <div class="account-nav">
+        <a href="{{ url_for('account.profile') }}" class="account-nav-link">Profil</a>
+        <a href="{{ url_for('account.orders') }}" class="account-nav-link active">Commandes</a>
+    </div>
+
+    <!-- Historique de commande -->
+    {% if orders %}
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>Œuvre</th>
+                    <th>Artiste</th>
+                    <th>Montant</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <!-- Nom de l'oeuvre -->
+                        <td>
+                            <a href="{{ url_for('artworks.detail', slug=order.artwork.slug) }}">
+                                {{ order.artwork.name }}
+                            </a>
+                        </td>
+                        <!-- Nom de l'artiste -->
+                        <td>{{ order.artwork.artist.username }}</td>
+                        <!-- Prix -->
+                        <td>CHF {{ order.amount }}</td>
+                        <!-- Date de commande -->
+                        <td>{{ order.created_at.strftime('%d.%m.%Y') }}</td>
+                        <!-- Statut -->
+                        <td>
+                            {% if order.email_sent %}
+                                <span class="badge-available">Envoyé !</span>
+                            {% else %}
+                                <span class="badge-sold">En attente</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p class="empty-message">Aucune commande pour le moment.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
