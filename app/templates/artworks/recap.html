@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Récapitulatif — PixelMarket{% endblock %}
+
+{% block content %}
+
+<div class="recap-container">
+
+    <h1 class="gallery-title">Récapitulatif de commande</h1>
+
+    <div class="recap-artwork">
+        {% if artwork.preview_path %}
+            <img src="{{ url_for('static', filename=artwork.preview_path) }}"
+                 alt="{{ artwork.name }}" class="recap-img">
+        {% endif %}
+
+        <div class="recap-info">
+            <p class="artwork-detail-artist">{{ artwork.artist.username }}</p>
+            <p class="artwork-detail-title"><em>{{ artwork.name }}</em></p>
+            {% if artwork.category %}
+                <span class="artwork-detail-category">{{ artwork.category.name }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="recap-total">
+        <p>Total</p>
+        <p class="recap-price">CHF {{ artwork.price }}</p>
+    </div>
+
+    <p class="recap-note">
+        Le fichier numérique vous sera envoyé par email à <strong>{{ current_user.email }}</strong> après confirmation.
+    </p>
+
+    <form method="POST" action="{{ url_for('artworks.buy', id=artwork.id) }}">
+        <!-- Protection contre les attaques csrf -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn-primary btn-full">Confirmer l'achat</button>
+    </form>
+
+    <a href="{{ url_for('artworks.detail', slug=artwork.slug) }}" class="btn-secondary btn-full">
+        Annuler
+    </a>
+
+</div>
+
+{% endblock %}
