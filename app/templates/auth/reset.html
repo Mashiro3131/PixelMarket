@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Nouveau mot de passe — PixelMarket{% endblock %}
+
+{% block content %}
+
+<div class="auth-container">
+
+    <h1 class="auth-title">Nouveau mot de passe</h1>
+    <p class="auth-subtitle">Choisissez un nouveau mot de passe pour votre compte.</p>
+
+    <form method="POST" action="{{ url_for('auth.reset', token=token) }}">
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+                <span class="form-error" role="alert">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.confirm_password.label }}
+            {{ form.confirm_password(class="form-control") }}
+            {% for error in form.confirm_password.errors %}
+                <span class="form-error" role="alert">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            {{ form.submit(class="btn-primary btn-full") }}
+        </div>
+
+    </form>
+
+    <div class="auth-links">
+        <a href="{{ url_for('auth.login') }}">Retour à la connexion</a>
+    </div>
+
+</div>
+
+{% endblock %}
