@@ -8,6 +8,7 @@ from app.extensions import db, bcrypt
 from app.models import User
 from app.blueprints.auth import bp
 from app.blueprints.auth.forms import RegisterForm, LoginForm, ForgotForm, ResetForm
+from app.utils import send_reset_email
 
 
 @bp.route('/register', methods=['GET', 'POST'])
@@ -54,7 +55,7 @@ def login():
 
         user = User.query.filter_by(email=form.email.data).first()
 
-        # Vérifie que l'user existe et est actif puis que le mdp est correct
+        # Vérifie que l'user existe, est actif et que le mdp est correct
         if not user or not user.is_active or not bcrypt.check_password_hash(
             user.password_hash, form.password.data
         ):
@@ -97,9 +98,8 @@ def forgot():
             user.reset_expires = datetime.now(timezone.utc) + timedelta(hours=1)
             db.session.commit()
 
-            # TODO: envoyer l'email avec le token (feature/orders-email)
-            reset_url = url_for('auth.reset', token=token, _external=True)
-            print(f'Reset URL (dev only): {reset_url}')
+            # Envoie l'email avec le lien de reset
+            send_reset_email(user)
 
         flash(
             'Si cet email existe, un lien de réinitialisation a été envoyé.',
@@ -116,7 +116,7 @@ def reset(token):
     # Cherche l'user avec ce token et vérifie qu'il n'est pas expiré
     user = User.query.filter_by(reset_token=token).first()
 
-    if not user or user.reset_expires < datetime.now(timezone.utc):
+    if not user or user.reset_expires.replace(tzinfo=timezone.utc) < datetime.now(timezone.utc):
         flash('Le lien de réinitialisation est invalide ou expiré.', 'danger')
         return redirect(url_for('auth.forgot'))
 
@@ -124,7 +124,7 @@ def reset(token):
 
     if form.validate_on_submit():
 
-        # Hash du nouveau mdp avant de le stocker
+        # Hash du nouveau mot de passe avant de le stocker
         user.password_hash = bcrypt.generate_password_hash(
             form.password.data
         ).decode('utf-8')
@@ -142,7 +142,7 @@ def reset(token):
 
 
 # -------------------------------- SOURCES --------------------------------
-# Flask-Login :    https://flask-login.readthedocs.io/en/latest/
-# Flask-Bcrypt :   https://flask-bcrypt.readthedocs.io/en/1.0.1/
-# secrets module : https://docs.python.org/3/library/secrets.html
-# Forgot Passowrd: https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html
+# Flask-Login :     https://flask-login.readthedocs.io/en/latest/
+# Flask-Bcrypt :    https://flask-bcrypt.readthedocs.io/en/1.0.1/
+# secrets module :  https://docs.python.org/3/library/secrets.html
+# Forgot Password : https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html
