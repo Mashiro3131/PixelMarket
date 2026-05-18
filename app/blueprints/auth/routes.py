@@ -102,7 +102,7 @@ def forgot():
             send_reset_email(user)
 
         flash(
-            'Si cet email existe, un lien de réinitialisation a été envoyé.',
+            'Un lien de réinitialisation a été envoyé.',
             'info'
         )
         return redirect(url_for('auth.login'))
