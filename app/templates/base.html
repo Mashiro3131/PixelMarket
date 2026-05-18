@@ -65,6 +65,11 @@
 
     <!-- Footer -->
     <footer class="footer">
+        <form method="POST" action="{{ url_for('account.newsletter') }}" class="newsletter-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="email" name="email" placeholder="Votre email" class="newsletter-input">
+            <button type="submit" class="btn-primary">S'abonner</button>
+        </form>
         <p>&copy; 2026 PixelMarket — Nico Mengisen</p>
     </footer>
 
