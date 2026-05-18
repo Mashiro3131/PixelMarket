@@ -1,0 +1,77 @@
+<!-- app/templates/emails/reset.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #111111;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            border-bottom: 1px solid #E0E0E0;
+            padding-bottom: 20px;
+            margin-bottom: 32px;
+        }
+        .brand {
+            font-family: Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .title {
+            font-family: Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+        .btn {
+            display: inline-block;
+            background: #111111;
+            color: #FFFFFF !important;
+            padding: 12px 32px;
+            text-decoration: none !important;
+            font-size: 0.875rem;
+            margin: 24px 0;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        .hint {
+            font-size: 0.75rem;
+            color: #888888;
+            margin-top: 16px;
+        }
+        .footer {
+            border-top: 1px solid #E0E0E0;
+            padding-top: 20px;
+            margin-top: 32px;
+            font-size: 0.75rem;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <span class="brand">PixelMarket</span>
+    </div>
+
+    <h1 class="title">Réinitialisation de mot de passe</h1>
+
+    <p>Bonjour {{ user.username }},</p>
+    <p>Tu as demandé à réinitialiser ton mot de passe. Clique sur le bouton ci-dessous :</p>
+
+    <a href="{{ reset_url }}" class="btn">Réinitialiser mon mot de passe</a>
+
+    <p class="hint">
+        Ce lien expire dans 1 heure !<br>
+        Si tu n'as pas demandé cette réinitialisation, ignore cet email.
+    </p>
+
+    <div class="footer">
+        <p>© 2026 PixelMarket — Nico Mengisen</p>
+    </div>
+
+</body>
+</html>
