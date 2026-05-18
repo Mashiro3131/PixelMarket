@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #111111;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .header {
+            border-bottom: 1px solid #E0E0E0;
+            padding-bottom: 20px;
+            margin-bottom: 32px;
+        }
+        .brand {
+            font-family: Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .title {
+            font-family: Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 24px;
+        }
+        .artwork-info {
+            background: #F5F5F5;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .artwork-name {
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: #888888;
+        }
+        .artwork-price {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        .footer {
+            border-top: 1px solid #E0E0E0;
+            padding-top: 20px;
+            margin-top: 32px;
+            font-size: 0.75rem;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <span class="brand">PixelMarket</span>
+    </div>
+
+    <h1 class="title">Merci pour votre achat !</h1>
+
+    <p>Bonjour {{ user.username }},</p>
+    <p>Votre achat a bien été confirmé. Vous trouverez votre œuvre en pièce jointe.</p>
+
+    <div class="artwork-info">
+        <p>Artiste : {{ artwork.artist.username }}</p>
+        <p class="artwork-name">{{ artwork.name }}</p>
+        <p class="artwork-price">CHF {{ artwork.price }}</p>
+    </div>
+
+    <p>Bonne découverte !</p>
+    <p>L'équipe PixelMarket</p>
+
+    <div class="footer">
+        <p>© 2026 PixelMarket — Nico Mengisen</p>
+    </div>
+
+</body>
+</html>
