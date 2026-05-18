@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Mon profil — PixelMarket{% endblock %}
+
+{% block content %}
+
+<div class="account-container">
+
+    <h1 class="gallery-title">Mon profil</h1>
+
+    <!-- Navigation du compte -->
+    <div class="account-nav">
+        <a href="{{ url_for('account.profile') }}" class="account-nav-link active">Profil</a>
+        <a href="{{ url_for('account.orders') }}" class="account-nav-link">Commandes</a>
+    </div>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <!-- Identité -->
+        <h2 class="account-section-title">Identité</h2>
+
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="form-control") }}
+            {% for error in form.username.errors %}
+                <span class="form-error" role="alert">{{ error }}</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-row">
+            <!-- Prénom -->
+            <div class="form-group">
+                {{ form.first_name.label }}
+                {{ form.first_name(class="form-control") }}
+                {% for error in form.first_name.errors %}
+                    <span class="form-error" role="alert">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Nom -->
+            <div class="form-group">
+                {{ form.last_name.label }}
+                {{ form.last_name(class="form-control") }}
+                {% for error in form.last_name.errors %}
+                    <span class="form-error" role="alert">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- Numéro -->
+        <div class="form-group">
+            {{ form.phone.label }}
+            {{ form.phone(class="form-control", placeholder="+41781234567") }}
+            {% for error in form.phone.errors %}
+                <span class="form-error" role="alert">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <!-- Adresse de facturation  -->
+        <h2 class="account-section-title">Adresse de facturation</h2>
+
+        <div class="form-group">
+            {{ form.street.label }}
+            {{ form.street(class="form-control") }}
+            {% for error in form.street.errors %}
+                <span class="form-error" role="alert">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="form-row">
+            <!-- Ville -->
+            <div class="form-group">
+                {{ form.city.label }}
+                {{ form.city(class="form-control") }}
+                {% for error in form.city.errors %}
+                    <span class="form-error" role="alert">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Code postal -->
+            <div class="form-group">
+                {{ form.zip_code.label }}
+                {{ form.zip_code(class="form-control") }}
+                {% for error in form.zip_code.errors %}
+                    <span class="form-error" role="alert">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-row">
+
+            <!-- Canton / états -->
+            <div class="form-group">
+                {{ form.state.label }}
+                {{ form.state(class="form-control") }}
+                {% for error in form.state.errors %}
+                    <span class="form-error" role="alert">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- Pays -->
+            <div class="form-group">
+                {{ form.country.label }}
+                {{ form.country(class="form-control") }}
+                {% for error in form.country.errors %}
+                    <span class="form-error" role="alert">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Bouton enrgistrer -->
+        <div class="form-group">
+            {{ form.submit(class="btn-primary") }}
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
