@@ -75,7 +75,7 @@ class ProfileForm(FlaskForm):
             Length(max=20),
             Regexp(
                 r'^[A-Z0-9\s]{2,10}$',
-                flags=2,  # re.IGNORECASE
+                flags=2, # re.IGNORECASE
                 message='Code postal invalide. Ex: 1020'
             )
         ]
