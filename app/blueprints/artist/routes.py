@@ -26,7 +26,7 @@ def save_file(file, folder):
 
 
 def artist_required(function):
-    """Décorateur — refuse l'accès si l'utilisateur n'est pas artiste ou admin."""
+    """Décorateur "@artist_required", refuse l'accès si l'utilisateur n'est pas artiste ou admin."""
 
     from functools import wraps
 
@@ -67,11 +67,11 @@ def add():
     if form.validate_on_submit():
 
         artwork = Artwork()
-        artwork.name        = form.name.data
+        artwork.name = form.name.data
         artwork.description = form.description.data
-        artwork.price       = form.price.data
+        artwork.price = form.price.data
         artwork.category_id = form.category_id.data
-        artwork.artist_id   = current_user.id
+        artwork.artist_id = current_user.id
 
         # Sauvegarde l'image de prévisualisation si fournie
         if form.preview.data:
@@ -82,7 +82,7 @@ def add():
             artwork.file_path = save_file(form.file.data, 'files')
 
         db.session.add(artwork)
-        db.session.flush()  # Récupère l'id avant le commit pour le slug
+        db.session.flush() # Récupère l'id avant le commit pour le slug
 
         # Génère le slug avec l'id
         artwork.slug = f"{slugify(artwork.name)}-{artwork.id}" # type: ignore
@@ -114,9 +114,9 @@ def edit(id):
 
     if form.validate_on_submit():
 
-        artwork.name        = form.name.data
+        artwork.name = form.name.data
         artwork.description = form.description.data
-        artwork.price       = form.price.data
+        artwork.price = form.price.data
         artwork.category_id = form.category_id.data
 
         # Met à jour le slug si le nom a changé
