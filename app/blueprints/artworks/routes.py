@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from app.blueprints.artworks import bp
 from app.extensions import db
-from app.models import Artwork, Category, Order
+from app.models import Artwork, Category, Order, User
 from app.utils import send_purchase_email
 
 
@@ -63,10 +63,12 @@ def search():
     query_str = request.args.get('q', '')
     page = request.args.get('page', 1, type=int)
 
-    # Recherche dans le nom et la description
-    artworks = Artwork.query.filter(
+    # Fait un JOIN entre les tables pour aussi chercher par artiste
+    artworks = Artwork.query.join(User, Artwork.artist_id == User.id).filter(
         Artwork.is_sold == False,
-        Artwork.name.contains(query_str) | Artwork.description.contains(query_str)
+        Artwork.name.contains(query_str) |
+        Artwork.description.contains(query_str) |
+        User.username.contains(query_str)
     ).paginate(page=page, per_page=12, error_out=False)
 
     return render_template(
@@ -74,6 +76,7 @@ def search():
         artworks=artworks,
         query=query_str
     )
+
 
 
 @bp.route('/buy/<int:id>', methods=['POST'])
