@@ -119,6 +119,10 @@ def delete_artwork(id):
 
     artwork = Artwork.query.get_or_404(id)
 
+    if artwork.is_sold:
+        flash('Impossible de supprimer une œuvre déjà vendue.', 'danger')
+        return redirect(url_for('admin.artworks'))
+
     db.session.delete(artwork)
     db.session.commit()
 
