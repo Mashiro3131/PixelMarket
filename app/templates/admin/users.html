@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin — Utilisateurs — PixelMarket{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-header">
+    <h1 class="gallery-title">Gestion des utilisateurs</h1>
+    <a href="{{ url_for('admin.artworks') }}" class="btn-secondary">Voir les œuvres</a>
+</div>
+
+{% if users %}
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <th>Utilisateur</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Statut</th>
+                <th>Inscrit le</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <!-- Changement de rôle -->
+                        {% if user.id != current_user.id %}
+                            <form method="POST" action="{{ url_for('admin.change_role', id=user.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <select name="role" onchange="this.form.submit()" class="role-select">
+                                    <option value="user" {% if user.role == 'user' %}selected{% endif %}>user</option>
+                                    <option value="artist" {% if user.role == 'artist' %}selected{% endif %}>artist</option>
+                                    <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>admin</option>
+                                </select>
+                            </form>
+                        {% else %}
+                            <span class="badge-available">{{ user.role }} (vous)</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user.is_active %}
+                            <span class="badge-available">Actif</span>
+                        {% else %}
+                            <span class="badge-sold">Inactif</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.created_at.strftime('%d.%m.%Y') }}</td>
+                    <td class="dashboard-actions">
+                        {% if user.id != current_user.id %}
+                            <!-- Activer / Désactiver -->
+                            <form method="POST" action="{{ url_for('admin.toggle_user', id=user.id) }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn-secondary">
+                                    {% if user.is_active %}Désactiver{% else %}Activer{% endif %}
+                                </button>
+                            </form>
+
+                            <!-- Supprimer -->
+                            <form method="POST" action="{{ url_for('admin.delete_user', id=user.id) }}"
+                                  onsubmit="return confirm('Supprimer {{ user.username }} ?')">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn-danger">Supprimer</button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% else %}
+    <p class="empty-message">Aucun utilisateur.</p>
+{% endif %}
+
+{% endblock %}
