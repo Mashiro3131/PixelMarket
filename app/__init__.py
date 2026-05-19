@@ -18,19 +18,19 @@ def create_app(config_class=Config):
 
 
     # Blueprints
-    from app.blueprints.auth     import bp as auth_bp
+    from app.blueprints.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
     
     from app.blueprints.artworks import bp as artworks_bp
     app.register_blueprint(artworks_bp)
     
-    from app.blueprints.artist   import bp as artist_bp
+    from app.blueprints.artist import bp as artist_bp
     app.register_blueprint(artist_bp)
     
-    from app.blueprints.admin    import bp as admin_bp
+    from app.blueprints.admin import bp as admin_bp
     app.register_blueprint(admin_bp)
     
-    from app.blueprints.account  import bp as account_bp
+    from app.blueprints.account import bp as account_bp
     app.register_blueprint(account_bp)
 
 

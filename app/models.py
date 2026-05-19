@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
     zip_code = db.Column(db.String(20), nullable=True)
  
     # Méthode de sécurité pour reset le mdp 
-    reset_token   = db.Column(db.String(100), unique=True, nullable=True)
+    reset_token = db.Column(db.String(100), unique=True, nullable=True)
     reset_expires = db.Column(db.DateTime, nullable=True)
  
     # Relations amoureuses avec les autres tables
@@ -136,7 +136,7 @@ class Newsletter(db.Model):
     email = db.Column(db.String(254), unique=True, nullable=False)
  
     # Voir si le user est abonné ou s'il à demandé à se désabonner
-    is_active  = db.Column(db.Boolean, nullable=False, default=True)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
  
     # Date d'inscription à la newsletter ou de demande de désabonnement
     created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)) 

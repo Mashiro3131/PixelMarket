@@ -8,9 +8,9 @@ from flask_bcrypt import Bcrypt
 db = SQLAlchemy()
 
 login_manager = LoginManager()
-login_manager.login_view = "auth.login"  # type: ignore
-login_manager.login_message = "Connecte-toi pour accéder à cette page."  # type: ignore
-login_manager.login_message_category = "warning"  # type: ignore
+login_manager.login_view = "auth.login" # type: ignore
+login_manager.login_message = "Connecte-toi pour accéder à cette page." # type: ignore
+login_manager.login_message_category = "warning" # type: ignore
 
 # Gestionnaire de mails
 mail = Mail()

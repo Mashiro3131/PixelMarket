@@ -15,8 +15,8 @@ with app.app_context():
     db.create_all()
 
 # ----------------------------- CATEGORIES --------------------------------
-    photo   = Category(name="Photo") # type: ignore
-    video   = Category(name="Vidéo") # type: ignore
+    photo = Category(name="Photo") # type: ignore
+    video = Category(name="Vidéo") # type: ignore
     musique = Category(name="Musique") # type: ignore
     affiche = Category(name="Affiche") # type: ignore
 
@@ -51,7 +51,7 @@ with app.app_context():
     oeuvre1.name = "Keltainen Kuu"
     oeuvre1.description = "Une photo capturant la lumière du coucher de soleil."
     oeuvre1.price = 2500.00
-    oeuvre1.artist_id   = artiste.id
+    oeuvre1.artist_id = artiste.id
     oeuvre1.category_id = photo.id
 
     oeuvre2 = Artwork()
@@ -94,9 +94,9 @@ with app.app_context():
 # -------------------------------- RECAP --------------------------------
 
     print("Base de données remplie avec succès !")
-    print(f"  {Category.query.count()} catégories")
-    print(f"  {User.query.count()} utilisateurs")
-    print(f"  {Artwork.query.count()} œuvres")
+    print(f"{Category.query.count()} catégories")
+    print(f"{User.query.count()} utilisateurs")
+    print(f"{Artwork.query.count()} œuvres")
     print()
     print(Fore.GREEN + "Comptes de test :")
     print(Fore.LIGHTGREEN_EX + "admin@pixelmarket.com  / admin1234!   (admin)")

@@ -12,7 +12,7 @@ Table users {
     email varchar(254) [unique, not null, note: "RFC 5321 (max 254 chars)"]
     password_hash varchar(255) [not null, note: "futur-proof argon2id"]
     role varchar(10) [not null, default: 'user', note: "user, artist, admin"]
-    is_active boolean [not null, default: true,   note: "Soft delete"]
+    is_active boolean [not null, default: true, note: "Soft delete"]
     created_at timestamp [not null, default: `now()`]
 
     // Adresse et contact de facturation
